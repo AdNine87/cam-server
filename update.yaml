@@ -1,8 +1,11 @@
 name: Update Camera Database
+
 on:
   schedule:
-    - cron: '0 2 * * 0' # Runs every Sunday at 2:00 AM
-  workflow_dispatch: # Allows you to run it manually
+    # Runs every day at 5:00 AM UTC (8:00 AM in Lithuania)
+    - cron: '0 5 * * *' 
+  workflow_dispatch: # Allows manual triggering
+
 
 jobs:
   build-and-deploy:
