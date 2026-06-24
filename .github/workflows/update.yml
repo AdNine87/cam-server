@@ -1,0 +1,34 @@
+name: Update Camera Database
+
+on:
+  schedule:
+    # Runs every day at 5:00 AM UTC (8:00 AM in Lithuania)
+    - cron: '0 5 * * *' 
+  workflow_dispatch: # Allows manual triggering
+
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: pip install requests
+
+      - name: Run Extraction Script
+        run: python update_cams.py
+
+      - name: Commit and Push to GitHub Pages
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add lithuania_cams.excam update_link.json
+          git commit -m "Automated Weekly Camera Update"
+          git push
